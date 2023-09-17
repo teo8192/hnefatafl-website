@@ -27,7 +27,7 @@ async fn main() {
 
     // run our app with hyper
     // `axum::Server` is a re-export of `hyper::Server`
-    let addr = SocketAddr::from(([127, 0, 0, 1], 3000));
+    let addr = SocketAddr::from(([0, 0, 0, 0], 80));
     tracing::debug!("listening on {}", addr);
     axum::Server::bind(&addr)
         .serve(app.into_make_service())
@@ -36,7 +36,7 @@ async fn main() {
 }
 
 async fn webapp_files(Path(path): Path<String>) -> impl IntoResponse {
-    let file = format!("webapp/pkg/{}", path);
+    let file = format!("/webapp/pkg/{}", path);
     tracing::debug!("path: {}", path);
 
     let file = match File::open(file).await {
@@ -64,7 +64,7 @@ async fn webapp_files(Path(path): Path<String>) -> impl IntoResponse {
 }
 
 async fn webpage_files(Path(path): Path<String>) -> impl IntoResponse {
-    let file = format!("webapp/webpage/{}", path);
+    let file = format!("/webapp/webpage/{}", path);
     tracing::debug!("path: {}", path);
 
     let file = match File::open(file).await {
