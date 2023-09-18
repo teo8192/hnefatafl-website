@@ -1,0 +1,17 @@
+{
+  "name": "hnefatafl-webapp",
+  "collaborators": [
+    "teo8192 <teodor@dahlknutsen.no>"
+  ],
+  "version": "0.1.0",
+  "files": [
+    "hnefatafl_webapp_bg.wasm",
+    "hnefatafl_webapp.js",
+    "hnefatafl_webapp.d.ts"
+  ],
+  "module": "hnefatafl_webapp.js",
+  "types": "hnefatafl_webapp.d.ts",
+  "sideEffects": [
+    "./snippets/*"
+  ]
+}

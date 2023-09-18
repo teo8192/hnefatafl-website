@@ -23,7 +23,7 @@ async fn main() {
         // `POST /users` goes to `create_user`
         .route("/users", post(create_user))
         .route("/webapp/*path", get(webapp_files))
-        .route("/webpage/*path", get(webpage_files));
+        .route("/webpage/*path", get(webapp_files));
 
     // run our app with hyper
     // `axum::Server` is a re-export of `hyper::Server`
@@ -36,36 +36,11 @@ async fn main() {
 }
 
 async fn webapp_files(Path(path): Path<String>) -> impl IntoResponse {
-    let file = format!("/webapp/pkg/{}", path);
+    let file = format!("/static/{}", path);
     tracing::debug!("path: {}", path);
 
-    let file = match File::open(file).await {
-        Ok(file) => file,
-        Err(_) => {
-            return Err(StatusCode::NOT_FOUND);
-        }
-    };
-
-    let mut headers = HeaderMap::new();
-    let contenttype = match path.split('.').last() {
-        Some("js") => "application/javascript",
-        Some("wasm") => "application/wasm",
-        Some("html") => "text/html",
-        Some("md") => "text/markdown",
-        _ => "text/plain",
-    };
-    headers.insert(CONTENT_TYPE, contenttype.parse().unwrap());
-
-    let stream = ReaderStream::new(file);
-
-    let body = StreamBody::new(stream);
-
-    Ok((headers, body))
-}
-
-async fn webpage_files(Path(path): Path<String>) -> impl IntoResponse {
-    let file = format!("/webapp/webpage/{}", path);
-    tracing::debug!("path: {}", path);
+    println!("file: {}", file);
+    println!("path: {}", path);
 
     let file = match File::open(file).await {
         Ok(file) => file,
